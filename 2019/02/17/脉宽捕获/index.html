@@ -108,24 +108,24 @@
 
 
 
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="基于stm32的脉宽捕获及其部分应用 一、对单个信号的捕获：按键信号捕获，按键按下时IO口会被拉高，使用定时器的输入捕获功能测量按下按键的时间（就是测量某一IO口的高电平时间）。(1) 定时器用到的 GP IO 初始化(2) 定时器时基结构体 TIM_TimeBaseInitTypeDef 初始化(3) 定时器输入捕获结构体 TIM_ICInitTypeDef 初始化(4) 编写中断服务函数，读取">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://ZT-Gao.github.io/2019/02/03/hello-world/index.html">
+<meta property="og:title" content="我的第一篇文章">
+<meta property="og:url" content="https://ZT-Gao.github.io/2019/02/17/脉宽捕获/index.html">
 <meta property="og:site_name" content="Hexo-ZT">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="基于stm32的脉宽捕获及其部分应用 一、对单个信号的捕获：按键信号捕获，按键按下时IO口会被拉高，使用定时器的输入捕获功能测量按下按键的时间（就是测量某一IO口的高电平时间）。(1) 定时器用到的 GP IO 初始化(2) 定时器时基结构体 TIM_TimeBaseInitTypeDef 初始化(3) 定时器输入捕获结构体 TIM_ICInitTypeDef 初始化(4) 编写中断服务函数，读取">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-02-03T11:29:38.632Z">
+<meta property="og:updated_time" content="2019-02-17T04:41:55.303Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="我的第一篇文章">
+<meta name="twitter:description" content="基于stm32的脉宽捕获及其部分应用 一、对单个信号的捕获：按键信号捕获，按键按下时IO口会被拉高，使用定时器的输入捕获功能测量按下按键的时间（就是测量某一IO口的高电平时间）。(1) 定时器用到的 GP IO 初始化(2) 定时器时基结构体 TIM_TimeBaseInitTypeDef 初始化(3) 定时器输入捕获结构体 TIM_ICInitTypeDef 初始化(4) 编写中断服务函数，读取">
 
 
 
 
 
 
-  <link rel="canonical" href="https://ZT-Gao.github.io/2019/02/03/hello-world/">
+  <link rel="canonical" href="https://ZT-Gao.github.io/2019/02/17/脉宽捕获/">
 
 
 
@@ -135,7 +135,7 @@
   };
 </script>
 
-  <title>Hello World | Hexo-ZT</title>
+  <title>我的第一篇文章 | Hexo-ZT</title>
   
 
 
@@ -290,7 +290,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ZT-Gao.github.io/2019/02/03/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://ZT-Gao.github.io/2019/02/17/脉宽捕获/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ZT-Gao">
@@ -307,7 +307,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World
+          <h1 class="post-title" itemprop="name headline">我的第一篇文章
               
             
           </h1>
@@ -332,9 +332,13 @@
                 
               
 
-              <time title="创建时间：2019-02-03 19:29:38" itemprop="dateCreated datePublished" datetime="2019-02-03T19:29:38+08:00">2019-02-03</time>
+              <time title="创建时间：2019-02-17 09:05:52 / 修改时间：12:41:55" itemprop="dateCreated datePublished" datetime="2019-02-17T09:05:52+08:00">2019-02-17</time>
             
 
+            
+              
+
+              
             
           </span>
 
@@ -366,15 +370,10 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <p>基于stm32的脉宽捕获及其部分应用</p>
+<p>一、对单个信号的捕获：<br>按键信号捕获，按键按下时IO口会被拉高，使用定时器的输入捕获功能测量按下按键的时间（就是测量某一IO口的高电平时间）。<br>(1) 定时器用到的 GP IO 初始化<br>(2) 定时器时基结构体 TIM_TimeBaseInitTypeDef 初始化<br>(3) 定时器输入捕获结构体 TIM_ICInitTypeDef 初始化<br>(4) 编写中断服务函数，读取捕获值，计算出脉宽的时间<br>这里给出输入捕获结构体的初始化（非完整代码）：<br>TIM_ICInitTypeDef TIM_ICInitStructure;<br> // 配置输入捕获的通道，需要根据具体的 GPIO 来配置<br> TIM_ICInitStructure.TIM_Channel = GENERAL_TIM_CHANNEL_x;<br> // 输入捕获信号的极性配置<br> TIM_ICInitStructure.TIM_ICPolarity = GENERAL_TIM_STRAT_ICPolarity;<br> // 输入通道和捕获通道的映射关系，有直连和非直连两种<br> TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;<br> // 输入的需要被捕获的信号的分频系数<br> TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;<br> // 输入的需要被捕获的信号的滤波系数<br> TIM_ICInitStructure.TIM_ICFilter = 0;<br> // 定时器输入捕获初始化<br> TIM_ICInit(GENERAL_TIM, &amp;TIM_ICInitStructure);<br>// 清除更新和捕获中断标志位<br>TIM_ClearFlag(GENERAL_TIM, TIM_FLAG_Update|GENERAL_TIM_IT_CCx);<br> // 开启更新和捕获中断<br> TIM_ITConfig (GENERAL_TIM, TIM_IT_Update | GENERAL_TIM_IT_CCx, ENABLE );<br>// 使能计数器<br> TIM_Cmd(GENERAL_TIM, ENABLE);<br>输入捕获的计数周期取决于ARR 寄存器的值和psc分频因子（配置定时器时注意），当超过这个计数周期的时候，就会产生中断，然后在中断里面做额外的处理，需要记录好产生了多少次更新中断，最后把这个更新时间加入到脉宽的时间里面。捕获时需要注意，按键默认接gnd，按下时拉高，进入中断，输入捕获的默认配置为上升沿，这就开始第一次捕获，注意同时把捕获边沿设置为下降沿，松手时（按键恢复接地），再次进入中断，捕获到下降沿，这时读取捕获寄存器的值，进而计算脉宽（高电平时间）。</p>
+<p>二、对pwm波的输入捕获：<br>可以使用定时器输出pwm波，使用另一定时器捕获。<br>首先要配置进行捕获的定时器的周期（调节arr和psc），使周期小于该周期的pwm波都可以被捕获到。<br>Pwm的输入捕获比较特殊，因为是PWM输入模式，只能使用通道1和通道2 ，假如我们使用的是通道1，即TI1，输入的 PWM 信号会被分成两路，分别是 TI1FP1 和 TI1FP2，两路都可以是触发信号。如果选择TI1FP1为触发信号，那么IC1捕获到的是PWM信号的周期， IC2捕获到的是占空比。<br>当捕获到 PWM 信号的第一个上升沿时，产生中断，计数器被复位，锁存到捕获寄存<br>器 IC1 和 IC2 的值都为 0。当下降沿到来时，IC2 会捕获，对应的是占空比，但是会产生中断。当捕获到第二个下降沿时，IC1 会捕获，对应的是周期，而且会再次进入中断，这个时间就可以根据 IC1 和 IC2 的值计算出频率和占空比。</p>
+<p>三、超声波模块测距<br>    一般需要大于10us的高电平触发（trig端可使用定时器输出pwm），超声波模块开始工作，发射一串方波，并自动检测是否有返回，返回后，接收端（echo）输出同等时间高电平，这时（重点来了），使用定时器的输入捕获功能，原理类似单信号的捕获，注意时间单位的换算以及计算距离时除以2。</p>
 
       
     </div>
@@ -402,15 +401,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/02/04/new/" rel="next" title="new">
+                <i class="fa fa-chevron-left"></i> new
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/02/04/测试/" rel="prev" title="����">
-                ���� <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -455,17 +454,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -510,22 +500,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
