@@ -287,6 +287,230 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ZT-Gao.github.io/2019/03/03/陀螺仪L3GD20/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZT-Gao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo-ZT">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/03/陀螺仪L3GD20/" itemprop="url">
+                  陀螺仪L3GD20
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-03 13:48:23 / 修改时间：14:47:47" itemprop="dateCreated datePublished" datetime="2019-03-03T13:48:23+08:00">2019-03-03</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>L3GD20<br>     通信方式可以选择spi和i2c两种方式。这里主要讲述有关L3GD20的的数据采集以及部分代码。<br>     首先是 初始化L3GD20，首先要初始化板子的SPI接口 ，然后就是对里面的寄存器进行读写操作，L3GD20的寄存器的初始化，可采用宏定义的方式。</p>
+<pre><code>#define L3GD20_WHO_AM_I_ADDR          0x0F 
+   //这是读取器件id的寄存器
+#define L3GD20_CTRL_REG1_ADDR         0x20  
+   //用来储存陀螺仪读取到的数据的寄存器
+</code></pre><p>   #define L3GD20_CTRL_REG2_ADDR         0x21  </p>
+<p>   #define L3GD20_CTRL_REG3_ADDR         0x22  </p>
+<p>   #define L3GD20_CTRL_REG4_ADDR         0x23<br>      //用来设置精度的寄存器</p>
+<p>   #define L3GD20_CTRL_REG5_ADDR         0x24<br>      //启动选项的寄存器</p>
+<p>初始化这些寄存器后就可以开始循环读出L3GD20采集到的三轴加速度数据了，数据保存在0x28~0x2d六个寄存器里面，分为XYZ三组。<br>以下为其它需要的寄存器</p>
+<p>#define L3GD20_REFERENCE_REG_ADDR     0x25   </p>
+<p>#define L3GD20_OUT_TEMP_ADDR          0x26   </p>
+<p>#define L3GD20_STATUS_REG_ADDR        0x27 </p>
+<p>#define L3GD20_OUT_X_L_ADDR           0x28 </p>
+<p>#define L3GD20_OUT_X_H_ADDR           0x29  </p>
+<p>#define L3GD20_OUT_Y_L_ADDR           0x2A  </p>
+<p>#define L3GD20_OUT_Y_H_ADDR           0x2B  </p>
+<p>#define L3GD20_OUT_Z_L_ADDR           0x2C  </p>
+<p>#define L3GD20_OUT_Z_H_ADDR           0x2D  </p>
+<p>#define L3GD20_FIFO_CTRL_REG_ADDR     0x2E   </p>
+<p>#define L3GD20_FIFO_SRC_REG_ADDR      0x2F  </p>
+<p>#define L3GD20_INT1_CFG_ADDR          0x30  </p>
+<p>#define L3GD20_INT1_SRC_ADDR          0x31   </p>
+<p>#define L3GD20_INT1_TSH_XH_ADDR       0x32 </p>
+<p>#define L3GD20_INT1_TSH_XL_ADDR       0x33   </p>
+<p>#define L3GD20_INT1_TSH_YH_ADDR       0x34   </p>
+<p>#define L3GD20_INT1_TSH_YL_ADDR       0x35   </p>
+<p>#define L3GD20_INT1_TSH_ZH_ADDR       0x36  </p>
+<p>#define L3GD20_INT1_TSH_ZL_ADDR       0x37     </p>
+<p>#define L3GD20_INT1_DURATION_ADDR     0x38 </p>
+<p>#define L3GD20_MODE_ACTIVE             (0x08)</p>
+<p>#define L3GD20_OUTPUT_DATARATE_1             (0x00)</p>
+<p>#define L3GD20_AXES_ENABLE             (0x07)</p>
+<p>#define L3GD20_BANDWIDTH_4             (0x30)</p>
+<p>#define L3GD20_BlockDataUpdate_Continous                     (0x00)</p>
+<p>#define L3GD20_BLE_LSB                 (0x00)</p>
+<p>#define L3GD20_FULLSCALE_500             (0x10)</p>
+<p>   陀螺仪传感器L3GD20的一些机械参数：<br>1. 符号：FS 含义：量程 用户可选择：（1）±250（2）±500（3）±2000       ，单位：dps,degree per second 度每秒 </p>
+<p>2.符号：SO 含义：灵敏度：一个角速度陀螺仪是用来产生一个正向输出数据的设备，这些输出数据是在围绕可能的敏感轴顺时针旋转得到的。灵敏度表示传感器的增加值，灵敏度可以由传感器的自定义角速度来决定。灵敏度的值在温度和时间改变时变化很小。 （1）±250量程时为8.75（2）±500量程时为       17.50（3）±2000量程时为70，单位：mdps/digit</p>
+<p>3.符号：SODR 含义：温度对灵敏度的影响 ：±2%，温度范围为-40C到      +85C</p>
+<p>4.DVOFF：零点漂移水平：零点漂移是指在角速度为零时陀螺仪传感器依旧有信号输出。在某些情况下，零点漂移是由于传感受到压力造成的，而且零点漂移的水平会因PCB曝光之后由于所受的机械压力而发生改变。（1）±250量程时为±10（2）±500量程时为±     15（3）±2000量程时为±75，单位：dps</p>
+<p>5.工作温度范围：-40C到+85C </p>
+<p> 附上.c代码：<br>陀螺仪初始化配置<br>void L3GD20_Init(L3GD20_InitTypeDef *L3GD20_InitStruct)<br>{<br>    L3GD20_InitTypeDef L3GD20_InitStructure;<br>    uint8_t ctrl1 = 0x00, ctrl4 = 0x00;</p>
+<pre><code>L3GD20_InitStructure.Power_Mode = L3GD20_MODE_ACTIVE;                   //配置值0x08
+L3GD20_InitStructure.Output_DataRate = L3GD20_OUTPUT_DATARATE_1; //0x00
+L3GD20_InitStructure.Axes_Enable = L3GD20_AXES_ENABLE;                      //0x07
+L3GD20_InitStructure.Band_Width = L3GD20_BANDWIDTH_4;                    //0x30
+L3GD20_InitStructure.BlockData_Update = L3GD20_BlockDataUpdate_Continous; //0x00
+L3GD20_InitStructure.Endianness = L3GD20_BLE_LSB;                                //0x00
+L3GD20_InitStructure.Full_Scale = L3GD20_FULLSCALE_500;                      //0x10
+
+if(L3GD20_InitStruct)
+{
+    ctrl1 |= (uint8_t) (L3GD20_InitStruct-&gt;Power_Mode | L3GD20_InitStruct-&gt;Output_DataRate | \
+                                L3GD20_InitStruct-&gt;Axes_Enable | L3GD20_InitStruct-&gt;Band_Width);
+    ctrl4 |= (uint8_t) (L3GD20_InitStruct-&gt;BlockData_Update | L3GD20_InitStruct-&gt;Endianness | \
+                                L3GD20_InitStruct-&gt;Full_Scale);
+}
+else
+{
+    ctrl1 |= (uint8_t) (L3GD20_InitStructure.Power_Mode | L3GD20_InitStructure.Output_DataRate | \
+                                L3GD20_InitStructure.Axes_Enable | L3GD20_InitStructure.Band_Width);
+    ctrl4 |= (uint8_t) (L3GD20_InitStructure.BlockData_Update | L3GD20_InitStructure.Endianness | \
+                                L3GD20_InitStructure.Full_Scale);
+}
+L3GD20_Write(L3GD20_CTRL_REG1_ADDR, ctrl1);
+SoftDelayMs(50);
+L3GD20_Write(L3GD20_CTRL_REG4_ADDR, ctrl4);
+SoftDelayMs(50);
+</code></pre><p>}</p>
+<p>l3gd20配置spi数据读写寄存器函数</p>
+<p>void L3GD20_Read(uint8_t* pBuffer, uint8_t ReadAddr, uint16_t NumByteToRead)<br>{<br>    if(NumByteToRead &gt; 0x01)<br>    {<br>        ReadAddr |= (uint8_t)(READWRITE_CMD | MULTIPLEBYTE_CMD);<br>    }<br>    else<br>    {<br>        ReadAddr |= (uint8_t)READWRITE_CMD;<br>    }<br>    L3GD20_CS_LOW();</p>
+<pre><code>Spi_SingleWirteAndRead(1, ReadAddr);
+
+SPI_MultiWriteAndRead(1, pBuffer, NULL, NumByteToRead);
+L3GD20_CS_HIGH();
+</code></pre><p>}  </p>
+<p>void L3GD20_Write(uint8_t reg, uint8_t value)<br>{</p>
+<pre><code>L3GD20_CS_LOW();
+Spi_SingleWirteAndRead(1, reg);
+Spi_SingleWirteAndRead(1, value); 
+L3GD20_CS_HIGH();    
+</code></pre><p>}</p>
+<p> 下面是封装读取陀螺仪三轴数据的函数，并将读取出来的数据进行封装</p>
+<p>void Demo_GyroReadAngRate(Vector3f_t<em> pfData)<br>{<br>    uint8_t tmpbuffer[6] ={0};<br>    int16_t RawData[3] = {0};<br>    uint8_t tmpreg = 0;<br>    float sensitivity = 0;<br>    int i =0;<br>    L3GD20_Read(&amp;tmpreg,L3GD20_CTRL_REG4_ADDR,1);<br>    L3GD20_Read(tmpbuffer,L3GD20_OUT_X_L_ADDR,6);<br>    if(!(tmpreg &amp; 0x40))<br>    {<br>        for(i=0; i&lt;3; i++)<br>        {<br>            RawData[i]=(int16_t)(((uint16_t)tmpbuffer[2</em>i+1] &lt;&lt; 8) + tmpbuffer[2<em>i]);<br>        }<br>    }<br>    else<br>    {<br>        for(i=0; i&lt;3; i++)<br>        {<br>            RawData[i]=(int16_t)(((uint16_t)tmpbuffer[2</em>i] &lt;&lt; 8) + tmpbuffer[2<em>i+1]);<br>        }<br>    }<br>    switch(tmpreg &amp; 0x30)              //选择不同的灵敏度<br>    {<br>        case 0x00:<br>            sensitivity=L3G_Sensitivity_250dps;//L3G_Sensitivity_500dps=360/pi<br>            break;<br>        case 0x10:<br>            sensitivity=L3G_Sensitivity_500dps;  //L3G_Sensitivity_500dps=180/pi=57.1429<br>            break;<br>        case 0x20:<br>            sensitivity=L3G_Sensitivity_2000dps;//L3G_Sensitivity_500dps=1/4</em>180/pi<br>            break;<br>    }<br>    for(i=0; i&lt;3; i++)<br>    {<br>        pfData[i]=(float)RawData[i]/sensitivity;<br>    }<br>    pfData-&gt;x = (float)RawData[0]/sensitivity;              //读出的数据除以量程<br>    pfData-&gt;y = (float)RawData[1]/sensitivity;<br>    pfData-&gt;z = (float)RawData[2]/sensitivity;<br>}  </p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ZT-Gao.github.io/2019/02/17/脉宽捕获/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -906,7 +1130,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
